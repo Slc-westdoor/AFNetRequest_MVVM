@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "PPNetworkHelper.h"
+#import "MJExtension.h"
 
 @interface ViewController ()
 
@@ -16,7 +18,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self request];
     // Do any additional setup after loading the view, typically from a nib.
+}
+
+-(void)request{
+    NSDictionary * dataDic =nil;
+    [self request:[NSString stringWithFormat:@"%@",@"http://www.sojson.com/open/api/weather/json.shtml?city=北京"] dataDic:dataDic requestType:messageRequest];
+}
+
+-(void)request:(NSString *)urlString dataDic:(NSDictionary *)dic requestType:(requestTagType)tagType{
+    if ([PPNetworkHelper isNetwork]) {
+        [PPNetworkHelper GET:urlString parameters:dic success:^(id responseObject) {
+             NSDictionary *dataDic = [responseObject JSONObject];
+             NSLog(@"----success%@", dataDic);
+        } failure:^(NSError *error) {
+            
+        }];
+    }else{
+    }
 }
 
 
